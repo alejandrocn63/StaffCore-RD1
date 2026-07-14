@@ -21,7 +21,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<StaffDbContext>()
 .AddDefaultTokenProviders();
 
-//k
+// 3. Configuración de Rutas de redirección para Cookies
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Account/Login";
