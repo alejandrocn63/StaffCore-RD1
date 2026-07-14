@@ -1,8 +1,100 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<StaffCore_RD1.Models.Staff>
+@{
+    ViewData["Title"] = "Listado de Personal";
+    decimal totalNomina = Model.Sum(s => s.Salario);
+
+    // Recuperamos las estadísticas del ViewBag enviadas desde el Controller
+    var stats = ViewBag.Estadisticas as IEnumerable<dynamic>;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row mb-4">
+    @foreach (var stat in stats)
+    {
+        <div class="col-md-3">
+            <div class="card bg-dark text-white shadow-sm border-0">
+                <div class="card-body text-center p-3">
+                    <h6 class="text-uppercase text-muted mb-1">@stat.Departamento</h6>
+                    <h3 class="mb-0">@stat.TotalEmpleados <i class="fs-6 fw-normal">Emp.</i></h3>
+                    <small class="text-success fw-bold">@stat.TotalNomina.ToString("C", new System.Globalization.CultureInfo("es-DO"))</small>
+                </div>
+            </div>
+        </div>
+    }
 </div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Listado de Personal Activo</h2>
+
+    <div class="d-flex gap-3 align-items-center w-50">
+        <input type="text" id="buscadorPersonal" class="form-control border-primary" placeholder="🔍 Buscar empleado por nombre..." />
+
+        @if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
+        {
+            <a asp-action="Create" class="btn btn-success text-nowrap">+ Nuevo</a>
+        }
+    </div>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+    <table class="table table-striped table-hover align-middle mb-0 bg-white" id="tablaEmpleados">
+        <thead class="table-primary">
+            <tr>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>Departamento</th>
+                <th>Salario</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><strong>@item.Nombre</strong></td>
+                    <td>@item.Cargo</td>
+                    <td>@item.Departamento</td>
+                    <td>@item.Salario.ToString("C", new System.Globalization.CultureInfo("es-DO"))</td>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm text-white">Detalles</a>
+
+                        @if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Editar</a>
+                        }
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot class="table-light">
+            <tr class="fw-bold fs-5">
+                <td colspan="3" class="text-end">Total Nómina Visible:</td>
+                <td colspan="2" class="text-success">@totalNomina.ToString("C", new System.Globalization.CultureInfo("es-DO"))</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+@section Scripts {
+    <script>
+        // BONUS 1: Lógica Javascript para búsqueda en tiempo real
+        document.getElementById('buscadorPersonal').addEventListener('keyup', function (e) {
+            let query = e.target.value;
+
+            // Hacemos un fetch a la ruta Index enviando la consulta
+            fetch(`/Staff/Index?buscarNombre=${query}`)
+                .then(response => response.text())
+                .then(html => {
+                    // Extraemos solo el cuerpo y pie de la tabla del nuevo HTML para no recargar la página entera
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(html, 'text/html');
+
+                    document.querySelector('#tablaEmpleados tbody').innerHTML = doc.querySelector('#tablaEmpleados tbody').innerHTML;
+                    document.querySelector('#tablaEmpleados tfoot').innerHTML = doc.querySelector('#tablaEmpleados tfoot').innerHTML;
+                });
+        });
+    </script>
+}

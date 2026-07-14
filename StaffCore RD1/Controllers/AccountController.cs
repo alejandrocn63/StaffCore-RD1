@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using StaffCore_RD1.Models;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace StaffCore_RD1.Controllers
 {
@@ -32,7 +34,10 @@ namespace StaffCore_RD1.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Asigna Administrador si es el primer usuario, de lo contrario Viewer
+                    // 1. Guardamos el nombre en los Claims del usuario
+                    await _userManager.AddClaimAsync(user, new Claim("NombreCompleto", model.NombreCompleto));
+
+                    // 2. Lógica de roles (que ya tenías)
                     var isFirstUser = _userManager.Users.Count() == 1;
                     string assignedRole = isFirstUser ? "Administrador" : "Viewer";
 
@@ -85,6 +90,18 @@ namespace StaffCore_RD1.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> MiPerfil()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // Enviamos los roles a la vista usando ViewBag
+            ViewBag.Roles = roles;
+            return View(user);
         }
     }
 }

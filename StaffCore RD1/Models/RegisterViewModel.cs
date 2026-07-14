@@ -4,6 +4,9 @@ namespace StaffCore_RD1.Models
 {
     public class RegisterViewModel
     {
+        [Required(ErrorMessage = "El nombre completo es obligatorio.")]
+        public string NombreCompleto { get; set; } // <-- Nuevo campo
+
         [Required(ErrorMessage = "El correo electrónico es obligatorio.")]
         [EmailAddress(ErrorMessage = "Formato de correo inválido.")]
         public string Email { get; set; }

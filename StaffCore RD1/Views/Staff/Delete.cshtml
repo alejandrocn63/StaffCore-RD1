@@ -1,6 +1,45 @@
-﻿namespace StaffCore_RD1.Views.Staff
-{
-    public class Delete
-    {
-    }
+﻿@model StaffCore_RD1.Models.Staff
+@{
+    ViewData["Title"] = "Eliminar Registro";
 }
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white text-center">
+                <h4 class="mb-0">⚠️ Confirmar Eliminación</h4>
+            </div>
+            <div class="card-body">
+                <p class="text-center text-muted">¿Está seguro de que desea eliminar a este miembro del personal del sistema? Esta acción no se puede deshacer.</p>
+
+                <div class="border rounded bg-light p-3 mb-4">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-secondary">Nombre:</dt>
+                        <dd class="col-sm-8 fw-bold">@Model.Nombre</dd>
+
+                        <dt class="col-sm-4 text-secondary">Cédula:</dt>
+                        <dd class="col-sm-8">@Model.Cedula</dd>
+
+                        <dt class="col-sm-4 text-secondary">Cargo:</dt>
+                        <dd class="col-sm-8">@Model.Cargo</dd>
+
+                        <dt class="col-sm-4 text-secondary">Departamento:</dt>
+                        <dd class="col-sm-8">@Model.Departamento</dd>
+
+                        <dt class="col-sm-4 text-secondary">Salario:</dt>
+                        <dd class="col-sm-8 text-success fw-bold">@Model.Salario.ToString("C", new System.Globalization.CultureInfo("es-DO"))</dd>
+
+                        <dt class="col-sm-4 text-secondary">Ingreso:</dt>
+                        <dd class="col-sm-8">@Model.FechaIngreso.ToString("dd/MM/yyyy")</dd>
+                    </dl>
+                </div>
+
+                <form asp-action="Delete" method="post" class="text-center">
+                    <input asp-for="Id" type="hidden" />
+                    <button type="submit" class="btn btn-danger px-4 me-2">Eliminar Definitivamente</button>
+                    <a asp-action="Index" class="btn btn-secondary px-4">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

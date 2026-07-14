@@ -1,0 +1,71 @@
+﻿@model StaffCore_RD1.Models.Staff
+@{
+    ViewData["Title"] = "Perfil del Empleado";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-info text-white d-flex align-items-center py-3">
+                <div class="bg-white rounded-circle d-flex justify-content-center align-items-center text-info fs-3 fw-bold me-3" style="width: 50px; height: 50px;">
+                    @Model.Nombre.Substring(0, 1)
+                </div>
+                <div>
+                    <h3 class="mb-0">@Model.Nombre</h3>
+                    <span class="badge bg-light text-dark mt-1">@Model.Cargo</span>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <h5 class="text-primary mb-3 border-bottom pb-2">Información Corporativa</h5>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-muted fw-bold">ID de Empleado:</div>
+                    <div class="col-sm-8">@Model.Id</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-muted fw-bold">Documento (Cédula):</div>
+                    <div class="col-sm-8">@Model.Cedula</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-muted fw-bold">Departamento:</div>
+                    <div class="col-sm-8">@Model.Departamento</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-muted fw-bold">Fecha de Ingreso:</div>
+                    <div class="col-sm-8">@Model.FechaIngreso.ToLongDateString()</div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-4 text-muted fw-bold">Salario Mensual:</div>
+                    <div class="col-sm-8 text-success fw-bold fs-5">@Model.Salario.ToString("C", new System.Globalization.CultureInfo("es-DO"))</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-4 text-muted fw-bold">Estado del Sistema:</div>
+                    <div class="col-sm-8">
+                        @if (Model.Activo)
+                        {
+                            <span class="badge bg-success px-3 py-2">Activo en Nómina</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger px-3 py-2">Inactivo</span>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light text-end py-3">
+                @if (User.IsInRole("Administrador") || User.IsInRole("RRHH"))
+                {
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning me-2">Editar Datos</a>
+                }
+                <a asp-action="Index" class="btn btn-secondary">Volver al Listado</a>
+            </div>
+        </div>
+    </div>
+</div>

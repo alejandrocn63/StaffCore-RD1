@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema; // <-- 1. Agrega esta librería
 
 namespace StaffCore_RD1.Models
 {
@@ -22,12 +23,13 @@ namespace StaffCore_RD1.Models
 
         [Required(ErrorMessage = "El salario es obligatorio.")]
         [Range(23223, double.MaxValue, ErrorMessage = "Mínimo RD$23,223")]
+        [Column(TypeName = "decimal(18,2)")] // <-- 2. Agrega esta línea para evitar la advertencia
         public decimal Salario { get; set; }
 
         [Required(ErrorMessage = "La fecha de ingreso es obligatoria.")]
         [DataType(DataType.Date)]
         public DateTime FechaIngreso { get; set; }
-
+        
         public bool Activo { get; set; } = true;
     }
 }

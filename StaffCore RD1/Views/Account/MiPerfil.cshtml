@@ -1,0 +1,48 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+@{
+    ViewData["Title"] = "Mi Cuenta";
+    var roles = ViewBag.Roles as IList<string>;
+    var nombreUsuario = User.Claims.FirstOrDefault(c => c.Type == "NombreCompleto")?.Value ?? "Usuario del Sistema";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-header bg-gradient-primary text-white text-center py-4 rounded-top-4">
+                <div class="bg-white rounded-circle d-inline-flex justify-content-center align-items-center text-primary fs-1 fw-bold mb-2 shadow" style="width: 80px; height: 80px;">
+                    @nombreUsuario.Substring(0, 1).ToUpper()
+                </div>
+                <h3 class="mb-0">@nombreUsuario</h3>
+                <p class="text-white-50 mb-0">Perfil de Autenticación</p>
+            </div>
+
+            <div class="card-body p-4">
+                <h5 class="text-primary mb-3 border-bottom pb-2">Credenciales de Acceso</h5>
+
+                <div class="row mb-3">
+                    <div class="col-sm-5 text-muted fw-bold">Correo (ID de Ingreso):</div>
+                    <div class="col-sm-7">@Model.Email</div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-sm-5 text-muted fw-bold">Nivel de Acceso (Rol):</div>
+                    <div class="col-sm-7">
+                        @foreach (var rol in roles)
+                        {
+                            <span class="badge bg-success px-2 py-1 fs-6">@rol</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-5 text-muted fw-bold">ID Interno de Seguridad:</div>
+                    <div class="col-sm-7 text-truncate"><small class="text-secondary">@Model.Id</small></div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-light text-center py-3">
+                <a asp-controller="Staff" asp-action="Index" class="btn btn-secondary px-4">Volver al Sistema</a>
+            </div>
+        </div>
+    </div>
+</div>

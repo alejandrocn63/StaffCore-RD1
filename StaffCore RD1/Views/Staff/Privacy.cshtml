@@ -1,6 +1,33 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Aviso de Privacidad Académica";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h1 class="display-5 fw-bold text-primary">@ViewData["Title"]</h1>
+                    <p class="text-muted">Presentación del Proyecto: @DateTime.Now.ToString("MMMM yyyy")</p>
+                </div>
+
+                <hr class="mb-4" />
+
+                <h4 class="fw-semibold text-dark">1. Naturaleza Académica del Sistema</h4>
+                <p class="text-secondary mb-4">
+                    <strong>StaffCore RD</strong> es un proyecto desarrollado estrictamente con fines de evaluación académica para la asignatura <strong>ISW-311 Tecnologías de Internet I</strong> de la Universidad Central del Este. Los registros de personal y nómina ingresados en esta aplicación son ficticios y se utilizan únicamente para comprobar la funcionalidad del sistema de gestión.
+                </p>
+
+                <h4 class="fw-semibold text-dark">2. Arquitectura de Seguridad</h4>
+                <p class="text-secondary mb-4">
+                    Para cumplir con la rúbrica establecida, este sistema implementa mecanismos reales de seguridad backend utilizando <strong>ASP.NET Core Identity</strong> junto con <strong>Entity Framework Core</strong>. Esto asegura el encriptado de las credenciales de prueba y gestiona las operaciones CRUD mediante un estricto control de rutas protegido por roles (Administrador, RRHH, Viewer).
+                </p>
+
+                <h4 class="fw-semibold text-dark">3. Cookies de Autenticación</h4>
+                <p class="text-secondary">
+                    La aplicación utiliza cookies técnicas nativas del framework .NET exclusivamente para mantener la sesión activa, recordar el inicio de sesión y validar los permisos de interacción con la base de datos. No se realiza ningún rastreo con fines comerciales ni análisis externo.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
