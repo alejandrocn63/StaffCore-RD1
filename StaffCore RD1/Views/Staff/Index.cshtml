@@ -3,7 +3,7 @@
     ViewData["Title"] = "Listado de Personal";
     decimal totalNomina = Model.Sum(s => s.Salario);
 
-    // Recuperamos las estadísticas del ViewBag enviadas desde el Controller
+    
     var stats = ViewBag.Estadisticas as IEnumerable<dynamic>;
 }
 
