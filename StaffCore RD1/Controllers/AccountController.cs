@@ -37,9 +37,8 @@ namespace StaffCore_RD1.Controllers
                     // 1. Guardamos el nombre en los Claims del usuario
                     await _userManager.AddClaimAsync(user, new Claim("NombreCompleto", model.NombreCompleto));
 
-                    // 2. Lógica de roles (que ya tenías)
-                    var isFirstUser = _userManager.Users.Count() == 1;
-                    string assignedRole = isFirstUser ? "Administrador" : "Viewer";
+                    var hayAdministrador = await _userManager.GetUsersInRoleAsync("Administrador");
+                    string assignedRole = hayAdministrador.Count == 0 ? "Administrador" : "Viewer";
 
                     await _userManager.AddToRoleAsync(user, assignedRole);
                     await _signInManager.SignInAsync(user, isPersistent: false);

@@ -6,7 +6,7 @@ using StaffCore_RD1.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StaffCoreRD.Controllers
+namespace StaffCore_RD1.Controllers
 {
     [Authorize]
     public class StaffController : Controller
