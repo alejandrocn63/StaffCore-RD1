@@ -88,7 +88,7 @@ namespace StaffCore_RD1.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Staff");
         }
 
         [Authorize]
